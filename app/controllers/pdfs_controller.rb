@@ -12,7 +12,16 @@ class PdfsController < ApplicationController
       # send email
       PdfsMailer.registration_form(params[:pdf][:email], pdf_name, pdf_path).deliver
       # delete pdf
-      File.delete(pdf_path)
+      # File.delete(pdf_path)
+      render json: {
+          status: 'ok',
+          message: 'The pdf file is generated and sent to the specified email.'
+      }, status: :ok
+    else
+      render json: {
+          status: 'error',
+          message: 'Error generating the pdf, this already exists.'
+      }, status: :conflict
     end
 
   end
