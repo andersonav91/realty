@@ -5,6 +5,10 @@ class PdfsController < ApplicationController
     pdf_name = "#{Time.now.strftime("%Y%m%dT%H%M%S%z")}.pdf"
     pdf_path = "#{Rails.root}/public/pdfs/#{pdf_name}"
 
+    # create pdf's folder if not exists
+    pdf_folder = "#{Rails.root}/public/pdfs/"
+    Dir.mkdir(pdf_folder) unless File.exists?(pdf_folder)
+
     # save pdf on disc and send pdf by email if it is not exists
     unless File.exists?(pdf_path)
       # save pdf
