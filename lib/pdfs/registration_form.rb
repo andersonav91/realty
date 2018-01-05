@@ -12,6 +12,8 @@ module Pdfs
       body
       form
       signatures
+      types_of_agency_representation
+      footer
     end
 
     def title
@@ -312,6 +314,63 @@ module Pdfs
         text("<b>X</b>", align: :center, valign: :center, size: 7, inline_format: true) if flag
       end
     end
+
+    def types_of_agency_representation
+
+      # add new page
+      start_new_page
+
+      font("#{Rails.root}/public/fonts/ARIALB.TTF") do
+        text 'TYPES OF AGENCY REPRESENTATION', size: 9.5, align: :center, inline_format: true
+      end
+
+      move_down 10
+
+      font("#{Rails.root}/public/fonts/ARIALB.TTF") do
+        table([["SELLER'S AGENT"]] , cell_style: {inline_format: true, borders: [:top, :left, :right], padding: [2,2,2,2], border_color: "000000", size: 9, align: :center}, :position => 0, :width => bounds.width)
+      end
+      font("#{Rails.root}/public/fonts/ARIAL.TTF") do
+        table([["A seller can engage the services of a real estate licensee to act as the seller’s agent in the sale of the seller’s property. This meansthat the real estate agent represents the seller, who is a client. The agent owes the seller client undivided loyalty, reasonable care, disclosure, obedience to lawful instruction, confidentiality and accounting. The agent must put the seller's interests first and attempt to negotiate price and terms acceptable to their seller client. The seller may authorize sub-agents to represent him/her in marketing its property to buyers, however the seller should be aware that wrongful action by the real estate agent or sub-agents may subject the seller to legal liability for those wrongful actions."]] , cell_style: {inline_format: true, borders: [:bottom, :left, :right], border_color: "000000", size: 9, align: :justify}, :position => 0, :width => bounds.width)
+      end
+
+
+      font("#{Rails.root}/public/fonts/ARIALB.TTF") do
+        table([["BUYER'S AGENT"]] , cell_style: {inline_format: true, borders: [:top, :left, :right], padding: [2,2,2,2], border_color: "000000", size: 9, align: :center}, :position => 0, :width => bounds.width)
+      end
+      font("#{Rails.root}/public/fonts/ARIAL.TTF") do
+        table([["A buyer can engage the services of a real estate licensee to act as the buyer’s agent in the purchase of a property. This means that the real estate agent represents the buyer, who is a client. The agent owes the buyer client undivided loyalty, reasonable care, disclosure, obedience to lawful instruction, confidentiality and accounting. The agent must put the buyer's interests first and attempt to negotiate price and terms acceptable to their buyer client. The buyer may also authorize sub-agents to represent him/her in purchasing property, however the buyer should be aware that wrongful action by the real estate agent or sub-agents may subject the buyer to legal liability for those wrongful actions."]] , cell_style: {inline_format: true, borders: [:bottom, :left, :right], border_color: "000000", size: 9, align: :justify}, :position => 0, :width => bounds.width)
+      end
+
+
+      font("#{Rails.root}/public/fonts/ARIALB.TTF") do
+        table([["(NON-AGENT) FACILITATOR"]] , cell_style: {inline_format: true, borders: [:top, :left, :right], padding: [2,2,2,2], border_color: "000000", size: 9, align: :center}, :position => 0, :width => bounds.width)
+      end
+      font("#{Rails.root}/public/fonts/ARIAL.TTF") do
+        table([["When a real estate licensee works as a facilitator that licensee assists the seller and/or buyer in reaching an agreement but does not represent either the seller or buyer in the transaction. The facilitator and the broker with whom the facilitator is affiliated, owe the seller and buyer a duty to present all real property honestly and accurately by disclosing known material defects and owe a duty to account for funds. Unless otherwise agreed, the facilitator has no duty to keep information received from a seller or buyer confidential. Should the seller and/or buyer expressly agree, a facilitator relationship can be changed to a seller or buyer client relationship with the written agreement of the person so represented."]] , cell_style: {inline_format: true, borders: [:bottom, :left, :right], border_color: "000000", size: 9, align: :justify}, :position => 0, :width => bounds.width)
+      end
+
+      font("#{Rails.root}/public/fonts/ARIALB.TTF") do
+        table([["DESIGNATED SELLER'S AND BUYER'S AGENT"]] , cell_style: {inline_format: true, borders: [:top, :left, :right], padding: [2,2,2,2], border_color: "000000", size: 9, align: :center}, :position => 0, :width => bounds.width)
+      end
+      font("#{Rails.root}/public/fonts/ARIAL.TTF") do
+        table([["A real estate licensee can be designated by another real estate licensee (the appointing or designating agent) to represent a buyer or seller, provided the buyer or seller expressly agrees to such designation. The real estate licensee once so designated is then the agent for that buyer or seller who becomes the agent’s client. The designated agent owes the buyer client or seller client, undivided loyalty, reasonable care, disclosure, obedience to lawful instruction, confidentiality and accounting. The agent must put their client's interests first, and attempt to negotiate price and terms acceptable to their client. No other licensees affiliated with the same firm represent the client unless otherwise agreed upon by the client. In situations where the appointing agent designates another agent to represent the seller and an agent to represent the buyer in the same transaction, then the appointing agent becomes a dual agent. Consequently, a dual agent cannot fully satisfy the duties of loyalty, full disclosure, obedience to lawful instructions, which is required of a seller or buyer agent. Only your designated agent represents your interests. Written consent for designated agency must be provided before a potential transaction is identified, but in any event, no later than prior to the execution of a written agreement for purchase or sale of residential property. The consent must contain the information provided for in the regulations of the Massachusetts Board of Registration of Real Estate Brokers and Salespeople (Board). A sample consent to designated agency is available at the Board's website at  <color rgb='0563C1'><link anchor='http://www.mass.gov/dpl/re'>www.mass.gov/dpl/re</link></color>."]] , cell_style: {inline_format: true, borders: [:bottom, :left, :right], border_color: "000000", size: 9, align: :justify}, :position => 0, :width => bounds.width)
+      end
+
+      font("#{Rails.root}/public/fonts/ARIALB.TTF") do
+        table([["DUAL AGENT"]] , cell_style: {inline_format: true, borders: [:top, :left, :right], padding: [2,2,2,2], border_color: "000000", size: 9, align: :center}, :position => 0, :width => bounds.width)
+      end
+      font("#{Rails.root}/public/fonts/ARIAL.TTF") do
+        table([["A real estate licensee may act as a dual agent representing both the seller and the buyer in a transaction but only with the express and informed written consent of both the seller and the buyer. A dual agent shall be neutral with regard to any conflicting interest of the seller and buyer. Consequently, a dual agent cannot satisfy fully the duties of loyalty, full disclosure, obedience to lawful instructions, which is required of a seller or buyer agent. A dual agent does, however, still owe a duty of confidentiality of material information and accounting for funds. Written consent for dual agency must be provided before a potential transaction is identified, but in any event, no later than prior to the execution of a written agreement for purchase or sale of residential property. The consent must contain the information provided for in the regulations of the Massachusetts Board of Registration of Real Estate Brokers and Salespeople (Board). A sample consent to dual agency is available at the Board's website at  <color rgb='0563C1'><link anchor='http://www.mass.gov/dpl/re'>www.mass.gov/dpl/re</link></color>."]] , cell_style: {inline_format: true, borders: [:bottom, :left, :right], border_color: "000000", size: 9, align: :justify}, :position => 0, :width => bounds.width)
+      end
+    end
+
+    def footer
+      font("#{Rails.root}/public/fonts/ARIALI.TTF") do
+        number_pages "Last Revised: January 24, 2017", {:at => [bounds.left, 0], :size => 10}
+      end
+    end
+
+    private
 
     def reset_fill_color
       fill_color "000000"
