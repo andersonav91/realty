@@ -19,7 +19,8 @@ class PdfsController < ApplicationController
       # File.delete(pdf_path)
       render json: {
           status: 'ok',
-          message: 'The pdf file is generated and sent to the specified email.'
+          message: 'The pdf file is generated and sent to the specified email.',
+          url: ENV["BACKEND_URL"] + "/pdfs/#{pdf_name}"
       }, status: :ok
     else
       render json: {
