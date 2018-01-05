@@ -1,7 +1,12 @@
 module Pdfs
   class RegistrationForm < Prawn::Document
-    def initialize()
+
+    attr_accessor :data
+
+    def initialize(data)
       super(top_margin: 30, right_margin: 30, left_margin: 30)
+
+      @data = data
 
       font_families.update("Arial" => {
           :normal => "#{Rails.root}/public/fonts/ARIAL.TTF",
@@ -87,17 +92,17 @@ module Pdfs
         draw_text('Check one:', at: [0, cursor - 8], size: 9)
 
         move_cursor_to cursor_y
-        checkbox(true, 90, cursor_y)
+        checkbox(@data[:real_estate_licensee_type].to_s == "1", 90, cursor_y)
         move_cursor_to cursor_y
         draw_text("Seller's agent", at: [105, cursor - 8], size: 9)
 
         move_cursor_to cursor_y
-        checkbox(true, 180, cursor_y)
+        checkbox(@data[:real_estate_licensee_type].to_s == "2", 180, cursor_y)
         move_cursor_to cursor_y
         draw_text("Buyer's agent", at: [195, cursor - 8], size: 9)
 
         move_cursor_to cursor_y
-        checkbox(true, 270, cursor_y)
+        checkbox(@data[:real_estate_licensee_type].to_s == "3", 270, cursor_y)
         move_cursor_to cursor_y
         draw_text("Facilitator", at: [285, cursor - 8], size: 9)
 
@@ -116,7 +121,7 @@ module Pdfs
         draw_text('Check one:', at: [0, cursor - 8], size: 9)
 
         move_cursor_to cursor_y
-        checkbox(true, 75, cursor_y)
+        checkbox(! @data[:is_designated_agency], 75, cursor_y)
         move_cursor_to cursor_y
         draw_text("Non-Designated Agency", at: [90, cursor - 8], size: 8)
 
@@ -125,7 +130,7 @@ module Pdfs
         line [315, cursor_y - 12], [540, cursor_y - 12]
 
         move_cursor_to cursor_y
-        checkbox(true, 315, cursor_y)
+        checkbox(@data[:is_designated_agency], 315, cursor_y)
         move_cursor_to cursor_y
         draw_text("Designated Agency", at: [330, cursor - 8], size: 8)
 
@@ -137,10 +142,10 @@ module Pdfs
 
       font("#{Rails.root}/public/fonts/ARIALB.TTF") do
         cursor_y = cursor - 36
-        checkbox(true, 110, cursor_y)
+        checkbox(! @data[:is_designated_agency] && @data[:designated_agency_type].to_s == '1', 110, cursor_y)
         draw_text("Seller", at: [120, cursor_y - 8], size: 8)
 
-        checkbox(true, 150, cursor_y)
+        checkbox(! @data[:is_designated_agency] && @data[:designated_agency_type].to_s == '2', 150, cursor_y)
         draw_text("Buyer", at: [160, cursor_y - 8], size: 8)
       end
 
@@ -151,10 +156,10 @@ module Pdfs
       cursor_y = cursor + 18
 
       font("#{Rails.root}/public/fonts/ARIALB.TTF") do
-        checkbox(true, 315, cursor_y)
+        checkbox(@data[:is_designated_agency] && @data[:designated_agency_type].to_s == '1', 315, cursor_y)
         draw_text("Seller", at: [325, cursor_y - 8], size: 8)
 
-        checkbox(true, 365, cursor_y)
+        checkbox(@data[:is_designated_agency] && @data[:designated_agency_type].to_s == '2', 365, cursor_y)
         draw_text("Buyer", at: [375, cursor_y - 8], size: 8)
       end
 
@@ -185,7 +190,13 @@ module Pdfs
 
         cursor_y = cursor
 
-        table([["Some Text"]] , cell_style: {inline_format: true, borders: [:bottom], padding: [2,2,2,2], border_color: "000000", size: 7.5}, :position => 160, :width => 185)
+        if @data[:printed_name_of_real_estate_licensee].length < 50
+          @data[:printed_name_of_real_estate_licensee] = @data[:printed_name_of_real_estate_licensee].ljust(50)
+        else
+          @data[:printed_name_of_real_estate_licensee] = @data[:printed_name_of_real_estate_licensee][0, 50] + "..."
+        end
+
+        table([["#{@data[:printed_name_of_real_estate_licensee]} #{@data[:license_number]}"]] , cell_style: {inline_format: true, borders: [:bottom], padding: [2,2,2,2], border_color: "000000", size: 7.5}, :position => 160, :width => 185)
         draw_text('Printed Name of Real Estate Licensee          License #', at: [165, cursor - 8], size:  7)
 
         move_up 12
@@ -195,10 +206,10 @@ module Pdfs
       end
 
       font("#{Rails.root}/public/fonts/ARIALB.TTF") do
-        checkbox(true, 360, cursor_y)
+        checkbox(@data[:printed_name_of_real_estate_licensee_type].to_s == "1", 360, cursor_y)
         draw_text("Broker", at: [370, cursor_y - 8], size: 7)
 
-        checkbox(true, 405, cursor_y)
+        checkbox(@data[:printed_name_of_real_estate_licensee_type].to_s == "2", 405, cursor_y)
         draw_text("Salesperson", at: [415, cursor_y - 8], size: 7)
       end
 
@@ -213,14 +224,21 @@ module Pdfs
       font("#{Rails.root}/public/fonts/ARIALI.TTF") do
         move_down 20
 
-        table([["Some Text"]] , cell_style: {inline_format: true, borders: [:bottom], padding: [2,2,2,2], border_color: "000000", size: 7.5}, :position => 0, :width => 155)
+        if @data[:name_real_estate_brokerage_firm].length < 50
+          @data[:name_real_estate_brokerage_firm] = @data[:name_real_estate_brokerage_firm].ljust(50)
+        else
+          @data[:name_real_estate_brokerage_firm] = @data[:name_real_estate_brokerage_firm][0, 50] + "..."
+        end
+
+        table([["#{@data[:name_real_estate_brokerage_firm]}"]] , cell_style: {inline_format: true, borders: [:bottom], padding: [2,2,2,2], border_color: "000000", size: 7.5}, :position => 0, :width => 155)
         draw_text("Name Real Estate Brokerage Firm", at: [5, cursor - 8], size: 7)
 
         move_up 12
 
         cursor_y = cursor
 
-        table([["Some Text"]] , cell_style: {inline_format: true, borders: [:bottom], padding: [2,2,2,2], border_color: "000000", size: 7.5}, :position => 160, :width => 185)
+
+        table([["#{@data[:brokerage_firm_real_estate_license_number]}"]] , cell_style: {inline_format: true, borders: [:bottom], padding: [2,2,2,2], border_color: "000000", size: 7.5}, :position => 160, :width => 185)
         draw_text('Brokerage Firm Real Estate License #', at: [165, cursor - 8], size:  7)
 
         move_up 12
@@ -246,7 +264,13 @@ module Pdfs
 
         cursor_y = cursor
 
-        table([["Some Text"]] , cell_style: {inline_format: true, borders: [:bottom], padding: [2,2,2,2], border_color: "000000", size: 7.5}, :position => 160, :width => 185)
+        if @data[:printed_name_of_consumer1].length < 50
+          @data[:printed_name_of_consumer1] = @data[:printed_name_of_consumer1].ljust(50)
+        else
+          @data[:printed_name_of_consumer1] = @data[:printed_name_of_consumer1][0, 50] + "..."
+        end
+
+        table([["#{@data[:printed_name_of_consumer1]}"]] , cell_style: {inline_format: true, borders: [:bottom], padding: [2,2,2,2], border_color: "000000", size: 7.5}, :position => 160, :width => 185)
         draw_text('Printed Name of Consumer', at: [165, cursor - 8], size:  7)
 
         move_up 12
@@ -256,10 +280,10 @@ module Pdfs
       end
 
       font("#{Rails.root}/public/fonts/ARIALB.TTF") do
-        checkbox(true, 360, cursor_y)
+        checkbox(@data[:customer_type1].to_s == "1", 360, cursor_y)
         draw_text("Buyer", at: [370, cursor_y - 8], size: 7)
 
-        checkbox(true, 405, cursor_y)
+        checkbox(@data[:customer_type1].to_s == "2", 405, cursor_y)
         draw_text("Seller", at: [415, cursor_y - 8], size: 7)
       end
 
@@ -281,7 +305,13 @@ module Pdfs
 
         cursor_y = cursor
 
-        table([["Some Text"]] , cell_style: {inline_format: true, borders: [:bottom], padding: [2,2,2,2], border_color: "000000", size: 7.5}, :position => 160, :width => 185)
+        if @data[:printed_name_of_consumer2].length < 50
+          @data[:printed_name_of_consumer2] = @data[:printed_name_of_consumer2].ljust(50)
+        else
+          @data[:printed_name_of_consumer2] = @data[:printed_name_of_consumer2][0, 50] + "..."
+        end
+
+        table([["#{@data[:printed_name_of_consumer2]}"]] , cell_style: {inline_format: true, borders: [:bottom], padding: [2,2,2,2], border_color: "000000", size: 7.5}, :position => 160, :width => 185)
         draw_text('Printed Name of Consumer', at: [165, cursor - 8], size:  7)
 
         move_up 12
@@ -291,10 +321,10 @@ module Pdfs
       end
 
       font("#{Rails.root}/public/fonts/ARIALB.TTF") do
-        checkbox(true, 360, cursor_y)
+        checkbox(@data[:customer_type2].to_s == "1", 360, cursor_y)
         draw_text("Buyer", at: [370, cursor_y - 8], size: 7)
 
-        checkbox(true, 405, cursor_y)
+        checkbox(@data[:customer_type2].to_s == "2", 405, cursor_y)
         draw_text("Seller", at: [415, cursor_y - 8], size: 7)
       end
 
@@ -302,7 +332,7 @@ module Pdfs
 
       move_down 40
 
-      checkbox(true, 320, cursor - 14)
+      checkbox(@data[:consumer_declines_to_sign_this_notice], 320, cursor - 14)
       font("#{Rails.root}/public/fonts/ARIALI.TTF") do
         draw_text("Check here if the consumer declines to sign this notice", at: [330, cursor], size: 9)
       end
