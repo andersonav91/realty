@@ -7,10 +7,10 @@ class PdfsController < ApplicationController
 
   def registration_of_real_estate_and_selling_brokers
     # params validation
-    pdf_validation = Pdfs::RegistrationFormValidation.new(params[:pdf])
+    pdf_validation = params[:pdf].nil? ? nil : Pdfs::RegistrationFormValidation.new(params[:pdf])
 
     # if valid form
-    if(pdf_validation.valid?)
+    if(! pdf_validation.nil? && pdf_validation.valid?)
 
       # new prawn pdf object
       pdf = Pdfs::RegistrationForm.new(params[:pdf])
@@ -39,18 +39,21 @@ class PdfsController < ApplicationController
         }, status: :conflict
       end
     else
-      # invalid form
-      render json: { status: 'error', message: pdf_validation.errors.full_messages.join(', ') }, status: :not_acceptable
+      if pdf_validation != nil
+        # invalid form
+        render json: { status: 'error', message: pdf_validation.errors.full_messages.join(', ') }, status: :not_acceptable
+      else
+        render json: { status: 'error', message: "Invalid request"}, status: :not_acceptable
+      end
     end
   end
 
   def offer_to_purchase_real_estate
-    # params validation
-    pdf_validation = Pdfs::OfferToPurchaseRealEstateValidation.new(params[:pdf])
+  # params validation
+    pdf_validation = params[:pdf].nil? ? nil : Pdfs::OfferToPurchaseRealEstateValidation.new(params[:pdf])
 
-    # if valid form
-    if(pdf_validation.valid?)
-
+  # if valid form
+    if(! pdf_validation.nil? && pdf_validation.valid?)
       # new prawn pdf object
       pdf = Pdfs::OfferToPurchaseRealEstate.new(params[:pdf])
       pdf_name = "#{Time.now.strftime("%Y%m%dT%H%M%S%z_offer_to_purchase_real_estate")}.pdf"
@@ -78,8 +81,12 @@ class PdfsController < ApplicationController
         }, status: :conflict
       end
     else
-      # invalid form
-      render json: { status: 'error', message: pdf_validation.errors.full_messages.join(', ') }, status: :not_acceptable
+      if pdf_validation != nil
+        # invalid form
+        render json: { status: 'error', message: pdf_validation.errors.full_messages.join(', ') }, status: :not_acceptable
+      else
+        render json: { status: 'error', message: "Invalid request"}, status: :not_acceptable
+      end
     end
   end
 
