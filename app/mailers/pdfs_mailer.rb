@@ -4,6 +4,14 @@ class PdfsMailer < ApplicationMailer
     attachments[pdf_name] = {mime_type: 'application/pdf',
                              content: File.open(pdf_path, 'rb').read}
     # send email
-    mail to: email, subject: 'Demo'
+    mail to: email, subject: 'Registration form'
+  end
+
+  def offer_to_purchase_real_estate
+    # attach the pdf
+    attachments[pdf_name] = {mime_type: 'application/pdf',
+                             content: File.open(pdf_path, 'rb').read}
+    # send email
+    mail to: email, subject: 'Offer to purchase real estate'
   end
 end
