@@ -2,7 +2,7 @@ class PdfsController < ApplicationController
   def registration_of_real_estate_and_selling_brokers
     # new prawn pdf object
     pdf = Pdfs::RegistrationForm.new(params[:pdf])
-    pdf_name = "#{Time.now.strftime("%Y%m%dT%H%M%S%z")}.pdf"
+    pdf_name = "#{Time.now.strftime("%Y%m%dT%H%M%S%z_registration_form")}.pdf"
     pdf_path = "#{Rails.root}/public/pdfs/#{pdf_name}"
 
     # create pdf's folder if not exists
@@ -15,8 +15,6 @@ class PdfsController < ApplicationController
       pdf.render_file(pdf_path)
       # send email
       PdfsMailer.registration_form(params[:pdf][:realty_send_email], pdf_name, pdf_path).deliver
-      # delete pdf
-      # File.delete(pdf_path)
       render json: {
           status: 'ok',
           message: 'The pdf file is generated and sent to the specified email.',
