@@ -1,5 +1,5 @@
 module Pdfs
-  class OfferToPurchaseRealEstate < Prawn::Document
+  class OfferToPurchase < Prawn::Document
 
     attr_accessor :data
 

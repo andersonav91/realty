@@ -1,5 +1,5 @@
 module Pdfs
-  class OfferToPurchaseRealEstateValidation
+  class OfferToPurchaseValidation
     include ActiveModel::Validations
 
     attr_accessor :realty_send_email

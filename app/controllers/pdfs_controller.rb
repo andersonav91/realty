@@ -50,12 +50,12 @@ class PdfsController < ApplicationController
 
   def offer_to_purchase_real_estate
   # params validation
-    pdf_validation = params[:pdf].nil? ? nil : Pdfs::OfferToPurchaseRealEstateValidation.new(params[:pdf])
+    pdf_validation = params[:pdf].nil? ? nil : Pdfs::OfferToPurchaseValidation.new(params[:pdf])
 
   # if valid form
     if(! pdf_validation.nil? && pdf_validation.valid?)
       # new prawn pdf object
-      pdf = Pdfs::OfferToPurchaseRealEstate.new(params[:pdf])
+      pdf = Pdfs::OfferToPurchase.new(params[:pdf])
       pdf_name = "#{Time.now.strftime("%Y%m%dT%H%M%S%z_offer_to_purchase_real_estate")}.pdf"
       pdf_path = "#{Rails.root}/public/pdfs/#{pdf_name}"
 
@@ -68,7 +68,7 @@ class PdfsController < ApplicationController
         # save pdf
         pdf.render_file(pdf_path)
         # send email
-        PdfsMailer.offer_to_purchase_real_estate(params[:pdf][:realty_send_email], pdf_name, pdf_path).deliver
+        PdfsMailer.offer_to_purchase(params[:pdf][:realty_send_email], pdf_name, pdf_path).deliver
         render json: {
             status: 'ok',
             message: 'The pdf file is generated and sent to the specified email.',
