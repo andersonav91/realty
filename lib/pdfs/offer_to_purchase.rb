@@ -13,6 +13,15 @@ module Pdfs
           :italic => "#{Rails.root}/public/fonts/ARIALI.TTF",
           :bold => "#{Rails.root}/public/fonts/ARIALB.TTF"
       })
+
+      title
+    end
+
+    def title
+      font("#{Rails.root}/public/fonts/TIMESB.TTF") do
+        move_down 2
+        text 'OFFER TO PURCHASE REAL ESTATE           FORM B', size: 14, align: :center, inline_format: true
+      end
     end
   end
 end
