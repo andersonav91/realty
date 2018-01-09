@@ -23,7 +23,7 @@ module Pdfs
 
     validates :real_estate_licensee_type, presence: true, numericality: true, inclusion: { in: [1, 2, 3] }
 
-    validates :is_designated_agency, presence: true, inclusion: { in: [ true, false ] }
+    validates :is_designated_agency, inclusion: { in: [ true, false ] }
 
     validates :designated_agency_type, presence: true, numericality: true, inclusion: { in: [1, 2] }
 
@@ -51,7 +51,7 @@ module Pdfs
 
     validates :printed_name_of_consumer2, presence: true
 
-    validates :consumer_declines_to_sign_this_notice, presence: true, inclusion: { in: [ true, false ] }
+    validates :consumer_declines_to_sign_this_notice, inclusion: { in: [ true, false ] }
 
     validates_format_of :realty_send_email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, :allow_blank => false
 
