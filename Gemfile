@@ -32,6 +32,9 @@ gem 'prawn-table'
 # Use send-grid for mailing
 gem 'sendgrid-rails'
 
+# Date validation
+gem 'date_validator'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
