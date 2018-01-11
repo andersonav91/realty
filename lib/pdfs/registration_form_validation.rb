@@ -27,8 +27,6 @@ module Pdfs
 
     validates :designated_agency_type, presence: true, numericality: true, inclusion: { in: [1, 2] }
 
-    validates :is_designated_agency, presence: true
-
     validates :license_number, presence: true, numericality: true
 
     validates :printed_name_of_real_estate_licensee, presence: true
