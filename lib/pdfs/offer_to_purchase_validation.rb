@@ -5,6 +5,7 @@ module Pdfs
     attr_accessor :realty_send_email,
                   :seller,
                   :seller_address,
+                  :seller_location,
                   :buyer_offer_to_pay,
                   :first_payment_value,
                   :secound_payment_value,
@@ -42,6 +43,8 @@ module Pdfs
     validates :seller, presence: true
 
     validates :seller_address, presence: true
+
+    validates :seller_location, presence: true
 
     validates :buyer_offer_to_pay, presence: true, numericality: true
 
@@ -111,6 +114,7 @@ module Pdfs
       @realty_send_email = params[:realty_send_email]
       @seller = params[:seller]
       @seller_address = params[:seller_address]
+      @seller_location = params[:seller_location]
       @buyer_offer_to_pay = params[:buyer_offer_to_pay]
       @first_payment_value = params[:first_payment_value]
       @secound_payment_value = params[:secound_payment_value]
@@ -148,6 +152,7 @@ module Pdfs
           :realty_send_email,
           :seller,
           :seller_address,
+          :seller_location,
           :buyer_offer_to_pay,
           :first_payment_value,
           :secound_payment_value,
